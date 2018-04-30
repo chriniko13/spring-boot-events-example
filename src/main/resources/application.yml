@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/test_app?useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: nikos
+    hikari:
+      idle-timeout: 10000
+      connection-test-query: SELECT 1 FROM DUAL
+      minimum-idle: 1
+      maximum-pool-size: 5
+      pool-name: myPool
+      auto-commit: false
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: dbg_db
+
+
+
+
