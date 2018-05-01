@@ -4,6 +4,7 @@ import com.chriniko.example.domain.Ticket;
 import com.chriniko.example.event.TicketPlayedEvent;
 import com.chriniko.example.event.TicketStoredEvent;
 import com.chriniko.example.repository.TicketRepository;
+import io.reactivex.Observable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,23 @@ public class TicketService {
     @Transactional(propagation = Propagation.REQUIRED)
     public List<Ticket> findAll() {
         return ticketRepository.findAll();
+    }
+
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Observable<List<Ticket>> findAllAsync() {
+
+        return Observable.create(observableEmitter -> {
+            try {
+                System.out.println("TicketService#findAllAsync --- thread: " + Thread.currentThread().getName());
+                List<Ticket> result = ticketRepository.findAll();
+                observableEmitter.onNext(result);
+                observableEmitter.onComplete();
+            } catch (final Exception error) {
+                observableEmitter.onError(error);
+            }
+        });
+
     }
 
 
