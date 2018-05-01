@@ -5,6 +5,7 @@ import com.chriniko.example.dto.PlayTicketDto;
 import com.chriniko.example.interceptor.ErrorHandlingAware;
 import com.chriniko.example.interceptor.StatisticsAware;
 import com.chriniko.example.service.TicketService;
+import io.reactivex.schedulers.Schedulers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ public class TicketResource {
         AtomicReference<ResponseEntity> ref = new AtomicReference<>();
 
         ticketService.findAllAsync()
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         list -> {
                             System.out.println("TicketResource#findAllAsync --- thread: " + Thread.currentThread().getName());
@@ -63,6 +65,7 @@ public class TicketResource {
         DeferredResult<ResponseEntity> ref = new DeferredResult<>();
 
         ticketService.findAllAsync()
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         list -> {
                             System.out.println("TicketResource#findAllAsync --- thread: " + Thread.currentThread().getName());
